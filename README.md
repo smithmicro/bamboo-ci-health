@@ -14,6 +14,11 @@ e.g. excessive retention of build results, inefficient use of build artifacts
 
 ## Getting Started
 
+Create a local Bamboo-MySQL deployment using Docker:
+
+    docker-compose up -d
+    docker ps  # Verify Bamboo and MySQL are both up and healthy
+
 Have Python 3.8+ installed on MacOS or Linux and create a virtualenv:
 
     python3 -m venv venv

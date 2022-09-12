@@ -1,0 +1,51 @@
+version: '3.3'
+
+services:
+  bamboo_server:
+    image: bamboo_server
+    build: ./bamboo_server
+    container_name: bamboo_server
+    depends_on:
+      - mysql_server
+    ports:
+      - target: 8085
+        published: 8085
+        protocol: tcp
+        mode: host
+    environment:
+      - ATL_PROXY_NAME=mblomdahl-mkdevops-se-bamboo-ci-health-7gwq6wr562p5qw-8085.githubpreview.dev
+      - ATL_PROXY_PORT=443
+      - ATL_LICENSE=AAA...02kc
+      - ATL_JDBC_URL=jdbc:mysql://bamboo_mysql:3306/bamboo?autoReconnect=true&useUnicode=true&characterEncoding=utf8&sessionVariables=storage_engine=InnoDB
+      - ATL_JDBC_USER=bamboouser
+      - ATL_JDBC_PASSWORD=password
+      - ATL_JDBC_TYPE=mysql
+    volumes:
+      - bamboo_server:/var/atlassian/application/application-data/bamboo:rw
+
+  mysql_server:
+    image: mysql:5.7
+    container_name: bamboo_mysql
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_bin --skip-ssl --default-time-zone=+00:00 --max-allowed-packet=2048M --connect-timeout=6000 --log-error-verbosity=3 --verbose
+    ports:
+      - target: 3306
+        published: 3306
+        protocol: tcp
+        mode: host
+    environment:
+      - MYSQL_HOST=%
+      - MYSQL_DATABASE=bamboo
+      - MYSQL_USER=bamboouser
+      - MYSQL_PASSWORD=password
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      # https://community.atlassian.com/t5/Jira-Software-questions/Connection-problem-with-MySQL-5-7-Got-an-error-reading/qaq-p/1399490
+      - MYSQL_INITDB_SKIP_TZINFO=yes
+      - TZ=+00:00
+    volumes:
+      - bamboo_mysql:/var/lib/mysql:rw
+
+volumes:
+  bamboo_server:
+    driver: local
+  bamboo_mysql:
+    driver: local

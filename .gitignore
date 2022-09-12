@@ -130,3 +130,12 @@ dmypy.json
 
 # IntelliJ
 .idea
+
+# Binaries
+*.tar
+*.tar.gz
+*.tgz
+
+# Temp files
+temp
+tmp
