@@ -14,10 +14,10 @@ e.g. excessive retention of build results, inefficient use of build artifacts
 
 ## Getting Started
 
-Create a local Bamboo-MySQL deployment using Docker:
+Create a local Bamboo-PostgreSQL deployment using Docker:
 
-    docker-compose up -d
-    docker ps  # Verify Bamboo and MySQL are both up and healthy
+    docker-compose build && docker-compose up -d
+    docker ps  # Verify Bamboo and PostgreSQL are both up and healthy
 
 Have Python 3.8+ installed on MacOS or Linux and create a virtualenv:
 

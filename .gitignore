@@ -139,3 +139,6 @@ dmypy.json
 # Temp files
 temp
 tmp
+
+# Secrets
+secret*
