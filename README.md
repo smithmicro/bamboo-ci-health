@@ -16,10 +16,17 @@ e.g. excessive retention of build results, inefficient use of build artifacts
 
 Create a local Bamboo-PostgreSQL deployment using Docker:
 
-    docker-compose build && docker-compose up -d
-    docker ps  # Verify Bamboo and PostgreSQL are both up and healthy
+    cp -v .env-template .env
+    vi .env  # Fill out with your own license and secrets, don't track it in Git.
+    docker-compose up -d postgresql_server && sleep 5 && docker ps  # Verify it's up.
+    docker-compose build
+    docker-compose up bamboo_server  # Verify Bamboo is up and healthy.
 
-Have Python 3.8+ installed on MacOS or Linux and create a virtualenv:
+Open `https://${PROXY_HOSTNAME}/` in your browser and verify that you
+can login the using credentials specified by _BAMBOO_ADMIN_USERNAME_ and
+_BAMBOO_ADMIN_PASSWORD_ in your `.env` file.
+
+Next, have Python 3.8+ installed on MacOS or Linux and create a virtualenv:
 
     python3 -m venv venv
     . venv/bin/activate

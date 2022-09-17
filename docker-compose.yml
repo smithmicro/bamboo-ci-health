@@ -12,16 +12,40 @@ services:
         published: 8085
         protocol: tcp
         mode: host
+      - target: 54663
+        published: 54663
+        protocol: tcp
+        mode: host
     environment:
-      - ATL_PROXY_NAME=mblomdahl-mkdevops-se-bamboo-ci-health-7gwq6wr562p5qw-8085.githubpreview.dev
-      - ATL_PROXY_PORT=443
-      - ATL_LICENSE=AAA...02kc
-      - ATL_JDBC_URL=jdbc:postgresql://bamboo_postgresql:5432
-      - ATL_JDBC_USER=bamboouser
-      - ATL_JDBC_PASSWORD=password
-      - ATL_JDBC_TYPE=postgresql
+      # https://bitbucket.org/atlassian-docker/docker-bamboo-server/src/master/entrypoint.py
+      - RUN_USER=root
+      - RUN_GROUP=root
+      - ATL_PROXY_NAME=${PROXY_HOSTNAME}
+      - ATL_PROXY_PORT=${PROXY_PORT}
+      - ATL_AUTOLOGIN_COOKIE_AGE=86400
+      - BAMBOO_HOME=/var/atlassian/application-data/bamboo
+      - ATL_BROKER_URI=nio://0.0.0.0:54663
+      - ATL_BROKER_CLIENT_URI=failover:(tcp://${PROXY_HOSTNAME}:54663?wireFormat.maxInactivityDuration=300000)
+      - ATL_BAMBOO_SKIP_CONFIG=true
+      - ATL_BAMBOO_ENABLE_UNATTENDED_SETUP=true
+      - ATL_BAMBOO_DISABLE_AGENT_AUTH=false
+      - SECURITY_TOKEN=${BAMBOO_SECURITY_TOKEN}
+      - ATL_LICENSE=${BAMBOO_LICENSE}
+      - ATL_BASE_URL=https://${PROXY_HOSTNAME}
+      - ATL_ADMIN_USERNAME=${BAMBOO_ADMIN_USERNAME}
+      - ATL_ADMIN_PASSWORD=${BAMBOO_ADMIN_PASSWORD}
+      - ATL_ADMIN_FULLNAME=${BAMBOO_ADMIN_FULLNAME}
+      - ATL_ADMIN_EMAIL=${BAMBOO_ADMIN_EMAIL}
+      - ATL_IMPORT_OPTION=clean
+      - ATL_IMPORT_PATH=
+      - ATL_FORCE_CFG_UPDATE=true
+      - ATL_DB_TYPE=${DB_TYPE}
+      - ATL_JDBC_URL=jdbc:postgresql://bamboo_postgresql:5432/${DB_NAME}
+      - ATL_JDBC_USER=${DB_USER}
+      - ATL_JDBC_PASSWORD=${DB_PASSWORD}
     volumes:
-      - bamboo_server:/var/atlassian/application/application-data/bamboo:rw
+      #- ${PWD}/bamboo_data:/var/atlassian/application/application-data/bamboo:rw
+      - ${PWD}/bamboo_home:/var/atlassian/application-data/bamboo:rw
 
   postgresql_server:
     image: postgres:14.5
@@ -32,14 +56,12 @@ services:
         protocol: tcp
         mode: host
     environment:
-      - POSTGRES_DB=bamboo
-      - POSTGRES_USER=bamboouser
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     volumes:
       - bamboo_postgresql:/var/lib/postgresql/data:rw
 
 volumes:
-  bamboo_server:
-    driver: local
   bamboo_postgresql:
     driver: local
