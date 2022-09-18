@@ -1,13 +1,16 @@
 FROM atlassian/bamboo-server:8.2.5
 
 # Linux basics
-RUN apt-get update && apt-get install --yes mlocate htop emacs
+RUN apt-get update && apt-get install --yes mlocate htop emacs wget tree jq dnsutils traceroute
 
-# Python dependencies
-RUN apt-get install --yes python3-venv python3-pandas python3-sqlalchemy 
+# Python development
+RUN apt-get install --yes python3-venv python3-pandas python3-sqlalchemy libmysqlclient-dev ipython3
 
 # Node development
 RUN apt-get install --yes nodejs npm yarnpkg
 
-# Provisioning/CD
-RUN apt-get install --yes ansible awscli
+# Java/Scala/Kotlin development
+RUN apt-get install --yes openjdk-8-jdk openjdk-11-jdk gradle scala kotlin
+
+# Ruby and Provisioning/CD
+RUN apt-get install --yes ruby rubygems ansible awscli
