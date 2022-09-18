@@ -21,7 +21,13 @@ services:
       - RUN_USER=bamboo
       - RUN_GROUP=bamboo
       - ATL_PROXY_NAME=${PROXY_HOSTNAME}
+      - CATALINA_CONNECTOR_PROXYNAME=${PROXY_HOSTNAME}
       - ATL_PROXY_PORT=${PROXY_PORT}
+      - CATALINA_CONNECTOR_PROXYPORT=${PROXY_PORT}
+      - ATL_PROXY_SCHEME=${PROXY_SCHEME}
+      - CATALINA_CONNECTOR_SCHEME=${PROXY_SCHEME}
+      - ATL_PROXY_SECURE=${PROXY_SECURE}
+      - CATALINA_CONNECTOR_SECURE=${PROXY_SECURE}
       - ATL_AUTOLOGIN_COOKIE_AGE=86400
       - BAMBOO_HOME=/var/atlassian/application-data/bamboo
       - ATL_BROKER_URI=nio://0.0.0.0:54663
@@ -40,7 +46,7 @@ services:
       - ATL_IMPORT_PATH=
       - ATL_FORCE_CFG_UPDATE=true
       - ATL_DB_TYPE=${DB_TYPE}
-      - ATL_JDBC_URL=jdbc:postgresql://bamboo_postgresql:5432/${DB_NAME}
+      - ATL_JDBC_URL=jdbc:postgresql://bamboo_postgresql:${DB_PORT}/${DB_NAME}
       - ATL_JDBC_USER=${DB_USER}
       - ATL_JDBC_PASSWORD=${DB_PASSWORD}
     volumes:
@@ -52,7 +58,7 @@ services:
     container_name: bamboo_postgresql
     ports:
       - target: 5432
-        published: 5432
+        published: ${DB_PORT}
         protocol: tcp
         mode: host
     environment:
