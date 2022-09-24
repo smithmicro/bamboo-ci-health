@@ -20,7 +20,7 @@ Create a local Bamboo-PostgreSQL deployment using Docker (version 20.10 or newer
     vi .env  # Fill out with your own license and secrets, don't track it in Git.
     docker-compose up -d postgresql_server && sleep 5 && docker ps  # Verify it's up.
     docker-compose build
-    docker-compose up bamboo_server  # Verify Bamboo is up and healthy.
+    docker-compose up nginx_proxy bamboo_server  # Verify Bamboo is up and healthy.
 
 Open `https://${PROXY_HOSTNAME}/` in your browser and verify that you
 can login the using credentials specified by _BAMBOO_ADMIN_USERNAME_ and

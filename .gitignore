@@ -145,3 +145,6 @@ tmp
 
 # Secrets
 secret*
+nginx_proxy/certs/
+!nginx_proxy/certs/localhost.crt
+!nginx_proxy/certs/localhost.key

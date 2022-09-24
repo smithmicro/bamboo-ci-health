@@ -1,6 +1,27 @@
 version: '3.3'
 
 services:
+  nginx_proxy:
+    image: nginx_proxy
+    build: ./nginx_proxy
+    container_name: nginx_proxy
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+      - target: 443
+        published: ${PROXY_PORT}
+        protocol: tcp
+        mode: host
+    environment:
+      - NGINX_HOST=${PROXY_HOSTNAME}
+      - NGINX_PORT=${PROXY_PORT}
+      - NGINX_UPSTREAM_HOST=${BAMBOO_HOSTNAME}
+      - NGINX_UPSTREAM_PORT=${BAMBOO_PORT}
+    links:
+      - bamboo_server
+
   bamboo_server:
     image: bamboo_server
     build: ./bamboo_server
@@ -9,7 +30,7 @@ services:
       - postgresql_server
     ports:
       - target: 8085
-        published: 8085
+        published: ${BAMBOO_PORT}
         protocol: tcp
         mode: host
       - target: 54663
@@ -28,6 +49,8 @@ services:
       - CATALINA_CONNECTOR_SCHEME=${PROXY_SCHEME}
       - ATL_PROXY_SECURE=${PROXY_SECURE}
       - CATALINA_CONNECTOR_SECURE=${PROXY_SECURE}
+      - ATL_TOMCAT_MGMT_PORT=8007
+      - ATL_TOMCAT_PORT=${BAMBOO_PORT}
       - ATL_AUTOLOGIN_COOKIE_AGE=86400
       - BAMBOO_HOME=/var/atlassian/application-data/bamboo
       - ATL_BROKER_URI=nio://0.0.0.0:54663
