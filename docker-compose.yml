@@ -5,6 +5,11 @@ services:
     image: nginx_proxy
     build: ./nginx_proxy
     container_name: nginx_proxy
+    healthcheck:
+      test: [ "CMD", "curl", "-s", "-k", "https://${PROXY_HOSTNAME}:${PROXY_PORT}/rest/api/latest/status" ]
+      timeout: 5s
+      interval: 30s
+      retries: 3
     restart: unless-stopped
     ports:
       - target: 80
@@ -27,6 +32,11 @@ services:
     image: bamboo_server
     build: ./bamboo_server
     container_name: bamboo_server
+    healthcheck:
+      test: [ "CMD", "curl", "-s", "http://localhost:${BAMBOO_PORT}/rest/api/latest/status" ]
+      timeout: 5s
+      interval: 30s
+      retries: 3
     restart: unless-stopped
     depends_on:
       - postgresql_server
@@ -82,6 +92,11 @@ services:
   postgresql_server:
     image: postgres:14.5
     container_name: bamboo_postgresql
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "${DB_NAME}", "-U", "${DB_USER}" ]
+      timeout: 5s
+      interval: 10s
+      retries: 3
     restart: unless-stopped
     ports:
       - target: 5432
