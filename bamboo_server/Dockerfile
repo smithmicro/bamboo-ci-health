@@ -1,7 +1,7 @@
 FROM atlassian/bamboo-server:8.2.5
 
 # Linux basics
-RUN apt-get update && apt-get install --yes mlocate htop emacs wget tree jq dnsutils traceroute
+RUN apt-get update && apt-get install --yes mlocate htop emacs wget tree jq dnsutils traceroute psmisc
 
 # Python development
 RUN apt-get install --yes python3-venv python3-pandas python3-sqlalchemy libmysqlclient-dev ipython3
