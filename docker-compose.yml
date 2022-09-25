@@ -41,8 +41,8 @@ services:
         mode: host
     environment:
       # https://bitbucket.org/atlassian-docker/docker-bamboo-server/src/master/entrypoint.py
-      - RUN_USER=bamboo
-      - RUN_GROUP=bamboo
+      - RUN_USER=${BAMBOO_USER}
+      - RUN_GROUP=${BAMBOO_GROUP}
       - ATL_PROXY_NAME=${PROXY_HOSTNAME}
       - CATALINA_CONNECTOR_PROXYNAME=${PROXY_HOSTNAME}
       - ATL_PROXY_PORT=${PROXY_PORT}
@@ -76,6 +76,7 @@ services:
       - ATL_JDBC_PASSWORD=${DB_PASSWORD}
     volumes:
       #- ${PWD}/bamboo_data:/var/atlassian/application/application-data/bamboo:rw
+      - /var/run/docker.sock:${BAMBOO_HOST_DOCKER_SOCKET}
       - ${PWD}/bamboo_home:/var/atlassian/application-data/bamboo:rw
 
   postgresql_server:
