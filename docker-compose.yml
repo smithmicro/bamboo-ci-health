@@ -5,6 +5,7 @@ services:
     image: nginx_proxy
     build: ./nginx_proxy
     container_name: nginx_proxy
+    restart: unless-stopped
     ports:
       - target: 80
         published: 80
@@ -26,6 +27,7 @@ services:
     image: bamboo_server
     build: ./bamboo_server
     container_name: bamboo_server
+    restart: unless-stopped
     depends_on:
       - postgresql_server
     ports:
@@ -79,6 +81,7 @@ services:
   postgresql_server:
     image: postgres:14.5
     container_name: bamboo_postgresql
+    restart: unless-stopped
     ports:
       - target: 5432
         published: ${DB_PORT}
