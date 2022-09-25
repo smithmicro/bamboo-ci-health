@@ -31,7 +31,7 @@ services:
     depends_on:
       - postgresql_server
     ports:
-      - target: 8085
+      - target: ${BAMBOO_PORT}
         published: ${BAMBOO_PORT}
         protocol: tcp
         mode: host
@@ -71,7 +71,7 @@ services:
       - ATL_IMPORT_PATH=
       - ATL_FORCE_CFG_UPDATE=true
       - ATL_DB_TYPE=${DB_TYPE}
-      - ATL_JDBC_URL=jdbc:postgresql://bamboo_postgresql:${DB_PORT}/${DB_NAME}
+      - ATL_JDBC_URL=jdbc:postgresql://bamboo_postgresql:5432/${DB_NAME}
       - ATL_JDBC_USER=${DB_USER}
       - ATL_JDBC_PASSWORD=${DB_PASSWORD}
     volumes:
