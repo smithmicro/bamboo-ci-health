@@ -135,6 +135,7 @@ dmypy.json
 *.tar
 *.tar.gz
 *.tgz
+*.psd
 
 # Bamboo
 bamboo_home/
