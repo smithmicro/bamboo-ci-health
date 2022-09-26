@@ -136,8 +136,9 @@ dmypy.json
 *.tar.gz
 *.tgz
 
-# Bamboo Home
+# Bamboo
 bamboo_home/
+bamboo_opt/
 
 # Temp files
 temp

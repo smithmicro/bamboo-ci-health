@@ -24,6 +24,13 @@ Create a local Bamboo-PostgreSQL deployment using Docker (version 20.10 or newer
     docker-compose up -d
     docker-compose ps  # Verify Bamboo is up and healthy.
 
+    # Optionally, copy the Bamboo application code to local directory:
+    docker cp bamboo_server:/opt/atlassian/ ./bamboo_opt
+
+Additional tip for Linux, add a host local account for the Bamboo user:
+
+    useradd -u 2005 -m -G docker bamboo
+
 Open `https://${PROXY_HOSTNAME}/` in your browser and verify that you
 can login the using credentials specified by _BAMBOO_ADMIN_USERNAME_ and
 _BAMBOO_ADMIN_PASSWORD_ in your `.env` file.
