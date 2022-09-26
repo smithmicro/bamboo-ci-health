@@ -30,13 +30,16 @@ services:
 
   bamboo_server:
     image: bamboo_server
-    build: ./bamboo_server
+    build:
+      context: ./bamboo_server
+      args:
+        - DOCKER_GID=${BAMBOO_HOST_DOCKER_GID}
     container_name: bamboo_server
     healthcheck:
       test: [ "CMD", "curl", "-s", "http://localhost:${BAMBOO_PORT}/rest/api/latest/status" ]
       timeout: 5s
       interval: 30s
-      retries: 3
+      retries: 6
     restart: unless-stopped
     depends_on:
       - postgresql_server
@@ -50,7 +53,8 @@ services:
         protocol: tcp
         mode: host
     environment:
-      # https://bitbucket.org/atlassian-docker/docker-bamboo-server/src/master/entrypoint.py
+      # https://bitbucket.org/atlassian-docker/docker-bamboo-server/src/master/entrypoint.py and
+      # https://bitbucket.org/atlassian-docker/docker-shared-components/src/master/image/entrypoint_helpers.py
       - RUN_USER=${BAMBOO_USER}
       - RUN_GROUP=${BAMBOO_GROUP}
       - ATL_PROXY_NAME=${PROXY_HOSTNAME}
@@ -85,7 +89,6 @@ services:
       - ATL_JDBC_USER=${DB_USER}
       - ATL_JDBC_PASSWORD=${DB_PASSWORD}
     volumes:
-      #- ${PWD}/bamboo_data:/var/atlassian/application/application-data/bamboo:rw
       - /var/run/docker.sock:${BAMBOO_HOST_DOCKER_SOCKET}
       - ${PWD}/bamboo_home:/var/atlassian/application-data/bamboo:rw
 

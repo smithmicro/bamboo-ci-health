@@ -13,10 +13,7 @@ RUN echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
   $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-RUN apt-get update && apt-get install --yes docker-ce-cli docker-ce docker-compose
-
-# Allow unprivileged `bamboo` user to interact with Docker engine
-RUN usermod -aG docker bamboo
+RUN apt-get update && apt-get install --yes docker-ce-cli docker-compose
 
 # Python development
 RUN apt-get install --yes python3-venv python3-pandas python3-sqlalchemy libmysqlclient-dev ipython3
@@ -31,3 +28,13 @@ RUN apt-get install --yes openjdk-8-jdk openjdk-11-jdk gradle scala kotlin
 
 # Ruby and Provisioning/CD
 RUN apt-get install --yes ruby rubygems ansible awscli
+
+# Allow unprivileged `bamboo` user to interact with Docker engine
+ARG DOCKER_GID=2005
+RUN groupmod -g $DOCKER_GID bamboo
+
+# Add custom logo
+ADD attachments /var/atlassian/application-data/bamboo/shared/attachments
+
+# Chown Bamboo home directory
+RUN chown -vR bamboo:bamboo /var/atlassian/application-data/bamboo/
