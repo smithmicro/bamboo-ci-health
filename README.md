@@ -47,6 +47,38 @@ Next, have Python 3.8+ installed on MacOS or Linux and create a virtualenv:
     ./generate_reports.py --help
 
 
+## Live Deployment
+
+In order to deploy the Bamboo stack to a live server, you need a DNS hostname,
+SSL certificate/key, and a Linux OS with Git and Docker (version 20.10 or newer).
+
+Step 1: Clone the repo to `/opt/bamboo-ci-health/`:
+
+    cd /opt/ && git clone git@.../bamboo-ci-health.git
+
+Step 2: Fill in your config secrets in the environment file:
+
+    cd /opt/bamboo-ci-health/
+    cp -v .env-template .env
+    vi .env
+    # Fill out with license and hostname, e.g. `PROXY_HOSTNAME=bamboo.mkdevops.se` and so on
+    cp -v ~/my-ssl-certificate.crt ./nginx_proxy/certs/bamboo.mkdevops.se.crt 
+    cp -v ~/my-ssl-certificate.key ./nginx_proxy/certs/bamboo.mkdevops.se.key 
+    docker-compose build
+    docker-compose up -d
+    docker-compose ps  # Verify all services are up and healthy.
+
+Step 3: Configure Bamboo by opening `https://${PROXY_HOSTNAME}/` in your browser
+and switch to the _Bamboo administration_ view, for example ...
+
+1. Restrict access under _Global permissions_
+2. Add a local agent under _Agents_
+3. Link GitHub/Bitbucket repositories under _Linked repositories_
+4. Add Git SSH key under _Shared credentials_
+5. Configure Crowd authentication under _User directories_
+6. ...
+
+
 ## Contact
 
 Do you want to help? Welcome!
