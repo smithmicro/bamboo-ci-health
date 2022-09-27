@@ -28,7 +28,7 @@ services:
     links:
       - bamboo_server
     volumes:
-      - ${PWD}/data/bamboo_nginx_static:/usr/share/nginx/html/static:r
+      - ${PWD}/data/bamboo_nginx_static:/usr/share/nginx/html/static:ro
 
   bamboo_server:
     image: bamboo_server
