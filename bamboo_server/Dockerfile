@@ -29,12 +29,9 @@ RUN apt-get install --yes openjdk-8-jdk openjdk-11-jdk gradle scala kotlin
 # Ruby and Provisioning/CD
 RUN apt-get install --yes ruby rubygems ansible awscli
 
+# Add custom logo
+ADD attachments /opt/atlassian/etc/attachments
+
 # Allow unprivileged `bamboo` user to interact with Docker engine
 ARG DOCKER_GID=2005
 RUN groupmod -g $DOCKER_GID bamboo
-
-# Add custom logo
-ADD attachments /var/atlassian/application-data/bamboo/shared/attachments
-
-# Chown Bamboo home directory
-RUN chown -vR bamboo:bamboo /var/atlassian/application-data/bamboo/
