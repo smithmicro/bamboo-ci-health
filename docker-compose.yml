@@ -28,7 +28,7 @@ services:
     links:
       - bamboo_server
     volumes:
-      - ${PWD}/data/bamboo_nginx_static:/usr/share/nginx/html/static:ro
+      - ./data/bamboo_nginx_static:/usr/share/nginx/html/static:ro
 
   bamboo_server:
     image: bamboo_server
@@ -92,7 +92,7 @@ services:
       - ATL_JDBC_PASSWORD=${DB_PASSWORD}
     volumes:
       - /var/run/docker.sock:${BAMBOO_HOST_DOCKER_SOCKET}
-      - ${PWD}/data/bamboo_home:/var/atlassian/application-data/bamboo:rw
+      - ./data/bamboo_home:/var/atlassian/application-data/bamboo:rw
 
   bamboo_postgresql:
     image: postgres:14.5
@@ -113,8 +113,4 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     volumes:
-      - ${PWD}/data/bamboo_postgresql:/var/lib/postgresql/data:rw
-
-volumes:
-  bamboo_postgresql:
-    driver: local
+      - ./data/bamboo_postgresql:/var/lib/postgresql/data:rw
