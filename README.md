@@ -68,6 +68,12 @@ Step 2: Fill in your config secrets in the environment file:
     docker-compose up -d
     docker-compose ps  # Verify all services are up and healthy.
 
+    # Optionally, customize the Bamboo logo by copying it into BAMBOO_HOME:
+    mkdir -p ./data/bamboo_home/shared/attachments/logos
+    cp -va ./bamboo_server/attachments/logos/bamboo02.png \
+      ./data/bamboo_home/shared/attachments/logos/bamboo-logo.png
+    chown -vR bamboo:docker ./data/bamboo_home/shared/attachments/
+
 Step 3: Configure Bamboo by opening `https://${PROXY_HOSTNAME}/` in your browser
 and switch to the _Bamboo administration_ view, for example ...
 
