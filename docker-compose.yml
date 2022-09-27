@@ -1,14 +1,14 @@
 version: '3.3'
 
 services:
-  nginx_proxy:
-    image: nginx_proxy
-    build: ./nginx_proxy
-    container_name: nginx_proxy
+  bamboo_nginx:
+    image: bamboo_nginx
+    build: ./bamboo_nginx
+    container_name: bamboo_nginx
     healthcheck:
-      test: [ "CMD", "curl", "-s", "-k", "https://${PROXY_HOSTNAME}:${PROXY_PORT}/rest/api/latest/status" ]
-      timeout: 5s
-      interval: 30s
+      test: [ "CMD", "curl", "-s", "-k", "https://${PROXY_HOSTNAME}:${PROXY_PORT}/nginx_health" ]
+      timeout: 2s
+      interval: 5s
       retries: 3
     restart: unless-stopped
     ports:
@@ -27,6 +27,8 @@ services:
       - NGINX_UPSTREAM_PORT=${BAMBOO_PORT}
     links:
       - bamboo_server
+    volumes:
+      - ${PWD}/data/bamboo_nginx_static:/usr/share/nginx/html/static:r
 
   bamboo_server:
     image: bamboo_server
@@ -42,7 +44,7 @@ services:
       retries: 6
     restart: unless-stopped
     depends_on:
-      - postgresql_server
+      - bamboo_postgresql
     ports:
       - target: ${BAMBOO_PORT}
         published: ${BAMBOO_PORT}
@@ -90,9 +92,9 @@ services:
       - ATL_JDBC_PASSWORD=${DB_PASSWORD}
     volumes:
       - /var/run/docker.sock:${BAMBOO_HOST_DOCKER_SOCKET}
-      - ${PWD}/bamboo_home:/var/atlassian/application-data/bamboo:rw
+      - ${PWD}/data/bamboo_home:/var/atlassian/application-data/bamboo:rw
 
-  postgresql_server:
+  bamboo_postgresql:
     image: postgres:14.5
     container_name: bamboo_postgresql
     healthcheck:
@@ -111,7 +113,7 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     volumes:
-      - bamboo_postgresql:/var/lib/postgresql/data:rw
+      - ${PWD}/data/bamboo_postgresql:/var/lib/postgresql/data:rw
 
 volumes:
   bamboo_postgresql:
