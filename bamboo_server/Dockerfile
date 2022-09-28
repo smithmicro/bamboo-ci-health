@@ -24,7 +24,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
     && npm install -g npm@6
 
 # Java/Scala/Kotlin development
-RUN apt-get install --yes openjdk-8-jdk openjdk-11-jdk gradle scala kotlin
+RUN apt-get install --yes openjdk-8-jdk openjdk-11-jdk openjdk-17-jdk gradle scala kotlin
 
 # Ruby and Provisioning/CD
 RUN apt-get install --yes ruby rubygems ansible awscli
