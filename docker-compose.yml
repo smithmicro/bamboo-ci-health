@@ -93,6 +93,7 @@ services:
     volumes:
       - /var/run/docker.sock:${BAMBOO_HOST_DOCKER_SOCKET}
       - ./data/bamboo_home:/var/atlassian/application-data/bamboo:rw
+      - ${BAMBOO_HOST_DOCKER_CONFIG}:/var/atlassian/application-data/bamboo/.docker:rw
 
   bamboo_postgresql:
     image: postgres:14.5
