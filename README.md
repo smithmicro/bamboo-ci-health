@@ -36,7 +36,7 @@ can login the using credentials specified by _BAMBOO_ADMIN_USERNAME_ and
 _BAMBOO_ADMIN_PASSWORD_ in your `.env` file.
 
 If the server is exposed on the internet, please open _Bamboo administration_ &gt;
-_Global permissions_ and disable access for "Anonymuous users" and
+_Global permissions_ and disable access for "Anonymous users" and
 (any) "Logged in users".
 
 Next, have Python 3.8+ installed on MacOS or Linux and create a virtualenv:
@@ -44,7 +44,7 @@ Next, have Python 3.8+ installed on MacOS or Linux and create a virtualenv:
     python3 -m venv venv
     . venv/bin/activate
     pip install -r requirements.txt
-    ./generate_reports.py --help
+    ./ci_health.py --help
 
 
 ## Live Deployment
