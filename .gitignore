@@ -131,6 +131,9 @@ dmypy.json
 # IntelliJ
 .idea
 
+# MacOS
+.DS_Store
+
 # Binaries
 *.tar
 *.tar.gz
