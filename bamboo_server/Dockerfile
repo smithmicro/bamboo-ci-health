@@ -1,4 +1,4 @@
-FROM atlassian/bamboo-server:8.2.5
+FROM atlassian/bamboo-server:9.2.11
 
 # Linux basics
 RUN apt-get update && apt-get install --yes mlocate htop emacs wget tree jq dnsutils traceroute psmisc
